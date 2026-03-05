@@ -66,7 +66,7 @@ Thumbs.db
 # Gemini / AI artifacts
 .gemini/
 tmp*/
-tmpclaude-*/
+tmpclaude*
 
 # Obsolete / Temporary Scripts
 run_sprint*.py
