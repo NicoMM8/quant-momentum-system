@@ -27,6 +27,11 @@ To control downside convexity, the system continuously observes a broad market p
 
 **The Golden Rule:** Returns are meaningless without context. The system generated a **CAGR of 21.88%** while maintaining a strict **Maximum Drawdown (MDD) of only -14.2%**.
 
+### Visual Performance Analysis & Research Notebook
+This repository includes an interactive **Jupyter Notebook** that renders the mathematical research process, the log-scale Equity Curve, and the Underwater Drawdown charts directly in your Github browser viewer.
+
+👉 **[View the Visual Research Notebook (`research/portfolio_simulation.ipynb`)](research/portfolio_simulation.ipynb)**
+
 ### Scenario A: The 10-Year Bull Market (2014-2024)
 * **Conditions:** High liquidity, low interest rates, tech boom.
 * **Performance:** **CAGR: 29.95%** | **MDD: -11.5%**
@@ -60,6 +65,7 @@ cd quant-momentum-system
 pip install -r requirements.txt
 
 # 3. Formulate local database and execute basic backtest routing
+# (Note: Upon first execution, the system will automatically fetch historical data via yfinance and build the local SQLite database).
 python run_full_system.py
 ```
 
@@ -115,3 +121,11 @@ quant_system/
     ├── test_router.py                  # Validates signal to broker routing pipelines
     └── test_trade_manager.py           # Validates the lifecycle of open/close tracking positions
 ```
+
+## 8. Future Work & Known Limitations
+This project serves as a foundational architecture, but professional environments require continuous iteration. Current engineering limitations include:
+
+1. **Intraday Scalability**: The system currently utilizes SQLite for daily resolution data. A migration to a time-series database (e.g., InfluxDB or KDB+) would be required to scale towards high-frequency or tick-level intraday execution.
+2. **Fractional Position Sizing**: The `MT5Connector` currently rounds down to the nearest whole `volume_step`. Integrating native fractional share logic would drastically improve portfolio tracking error on smaller capital allocations.
+3. **Advanced Volatility Modeling**: The current implementation relies on a static Average True Range (ATR) threshold limit. A transition to a robust statistical model, such as GARCH(1,1), would allow for superior dynamic volatility clustering estimation.
+4. **Interactive Dashboarding**: While the current visual analysis is handled via Jupyter Notebooks (`research/portfolio_simulation.ipynb`), an interactive web frontend utilizing **Streamlit** is planned for future sprints. This will provide a no-code interface for backtest parameter tuning and live result rendering.
