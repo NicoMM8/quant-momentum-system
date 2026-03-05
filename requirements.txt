@@ -1,0 +1,22 @@
+# Quant Trading System - Minimum Dependencies
+# Install with: pip install -r requirements.txt
+
+# Core Data APIs
+yfinance>=0.2.36
+
+# Core Math & DataStructures
+pandas>=2.0.0
+numpy>=1.24.0
+scipy>=1.11.0
+
+# Database Engine
+# sqlite3 is built-in with Python 3.x
+
+# Charting and Output
+matplotlib>=3.7.0
+
+# Execution Environment
+# MetaTrader5>=5.0.45 (Only required for Live Execution on Windows)
+
+# CLI Output
+tqdm>=4.65.0

@@ -1,0 +1,112 @@
+# ===========================================
+# Quant Trading System - Configuration
+# ===========================================
+
+# Sistema General
+system:
+  name: "Quant Trading System"
+  version: "1.0.0"
+  log_level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  log_format: "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
+
+# Base de Datos
+database:
+  path: "quant.db"
+  pool_size: 5
+  timeout: 30
+
+# Universo de Trading
+universe:
+  default_tickers:
+    - "AAPL"
+    - "MSFT"
+    - "NVDA"
+    - "AMD"
+    - "GOOGL"
+    - "AMZN"
+    - "TSLA"
+    - "SPY"
+    - "QQQ"
+  max_positions: 5
+  data_period: "2y"
+
+# Gestión de Riesgo
+risk:
+  # Position Sizing
+  max_position_pct: 0.10      # Máximo 10% del capital por posición
+  max_portfolio_risk: 0.02    # Máximo 2% de riesgo total del portfolio
+  kelly_fraction: 0.25        # Fracción de Kelly a usar (25% = Quarter Kelly)
+  
+  # Stop Loss / Take Profit
+  stop_loss_pct: 0.005        # 0.5% Stop Loss
+  take_profit_pct: 0.015      # 1.5% Take Profit (R:R = 1:3)
+  
+  # Trailing Stop
+  trailing_trigger: 0.008     # Activar trailing si ganamos 0.8%
+  trailing_distance: 0.003    # Trailing a 0.3% del máximo
+  
+  # Límites de Drawdown
+  max_daily_loss: 0.03        # Máximo 3% pérdida diaria
+  max_weekly_loss: 0.06       # Máximo 6% pérdida semanal
+
+# Estrategias
+strategies:
+  macro:
+    enabled: true
+    weights:
+      pe_ratio: 0.4
+      pb_ratio: 0.3
+      roe: 0.3
+    top_n: 5
+  
+  technical:
+    enabled: true
+    ema_short: 50
+    ema_long: 200
+    rsi_period: 14
+    volume_period: 20
+    top_n: 5
+  
+  micro:
+    enabled: true
+    obi_threshold: 0.4        # Order Book Imbalance threshold
+
+# Backtesting
+backtest:
+  initial_capital: 10000.0
+  commission_pct: 0.001       # 0.1% comisión por trade
+  slippage_pct: 0.0005        # 0.05% slippage estimado
+  short_window: 50
+  long_window: 200
+
+# Data Ingestion
+ingestion:
+  yahoo_delay_ms: 500         # Delay entre requests a Yahoo Finance
+  max_retries: 3
+  timeout_seconds: 30
+
+# Dashboard
+dashboard:
+  refresh_interval: 5000      # Milisegundos entre actualizaciones
+  theme: "dark"
+  port: 8501
+
+# Broker (Admiral Markets / MT5)
+broker:
+  platform: "mt5"
+  login: 0              # Set via env var MT5_LOGIN
+  password: ""          # Set via env var MT5_PASSWORD
+  server: "AdmiralMarkets-Demo"  # Cambiar a AdmiralMarkets-Live para real
+  terminal_path: ""     # Auto-detect
+  symbol_suffix: ".US"  # Sufijo para stocks en Admiral
+  paper_mode: true      # TRUE por seguridad inicial. Cambiar a FALSE para operar.
+
+# Ejecución
+execution:
+  order_type: "market"
+  max_slippage_points: 10
+  check_interval_seconds: 60
+  layers:
+    macro_interval: "1d"
+    technical_interval: "1h"
+    micro_interval: "1m"

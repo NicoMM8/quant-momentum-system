@@ -1,0 +1,77 @@
+# Quant System Git Ignore
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Development environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.vscode/
+.idea/
+
+# Local databases (DO NOT COMMIT HUGE DBs)
+*.db
+*.sqlite
+*.sqlite3
+quant.db
+
+# Live Trading Logs & Trade Exports
+*.log
+logs/
+trades_log.csv
+live_output.txt
+mass_out.txt
+momentum_out.txt
+momentum_out_no_costs.txt
+point_in_time_out*.txt
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Gemini / AI artifacts
+.gemini/
+tmp*/
+tmpclaude-*/
+
+# Obsolete / Temporary Scripts
+run_sprint*.py
+run_live_test.py
+run_simulation_export.py
+main.py
+setup_bd.py
+trades_log.csv
