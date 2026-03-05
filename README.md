@@ -12,12 +12,26 @@ A frequent issue in retail open-source algorithms is the overestimation of retur
 - **Survivorship Bias Elimination**: Historical constituents of the S&P 500 are reconstructed month-by-month via a custom Point-in-Time (PiT) ETL pipeline (`sp500_historical_universe.json`). The system does not "look ahead" or trade assets that did not exist in the index historically.
 - **Dividend Reinvestment (DRIP)**: Models an annualized base dividend yield (~1.5%) across the holding period to accurately reflect Total Return metrics.
 
-## 3. Mathematical Architecture & Filtering
-The routing logic is driven by a multi-factor ranking model evaluated on a monthly rebalancing frequency:
+## 3. 3-Layer Alpha Generation Architecture
+The routing logic is driven by a multi-factor ranking model evaluated through a strict 3-Layer funnel on a monthly rebalancing frequency:
 
-1. **Skip-Month Momentum**: Ranks the S&P 500 cross-sectionally based on a lookback window, strictly excluding the most recent trailing month to bypass short-term mean-reversion effects.
-2. **True Range Volatility Threshold**: Excludes assets exhibiting a normalized daily Average True Range (ATR) above a specified threshold. This cuts tail-risk associated with erratic idiosyncratic events (e.g., meme-stock short squeezes).
-3. **Sector Concentration Bounds**: An upper bound of $N_{max}$ equities per GICS sector is strictly enforced to ensure the portfolio is not purely loading onto a single sector beta factor during localized bubbles.
+### Layer 1: Fundamental Macro Scanner (Value + Quality)
+Filters the initial broad universe evaluating the fundamental health of the constituents. The proprietary scoring algorithm utilizes a sector-neutral Z-Score composite isolating:
+- **P/E Ratio (40% Weight)**: Isolates pure Value anomalies.
+- **P/B Ratio (30% Weight)**: Price-to-Book discounts against sector peers.
+- **ROE (30% Weight)**: Enhances the factor with Quality (Return on Equity).
+
+### Layer 2: Technical Filtro (Timing & Momentum)
+Receives the fundamentally approved assets from Layer 1 and evaluates execution timing. The model requires a strict bullish trend ("Golden Cross" condition where EMA 50 > EMA 200 and Spot > EMA 200). It then assigns an aggregated momentum score combining:
+- **Trend Strength (40%)**
+- **Momentum RSI (30%)**
+- **Institutional Participation RVOL (30%)**
+
+### Layer 3: Risk Microstructure & Execution
+Evaluates real-time Order Flow anomalies to issue definitive execution routing. Enforces strict constraints including:
+1. **Skip-Month Momentum**: Strictly excluding the most recent trailing month to bypass short-term mean-reversion effects.
+2. **True Range Volatility Threshold**: Excludes assets exhibiting erratic ATR spikes (e.g., meme-stock short squeezes).
+3. **Sector Concentration Bounds**: Upper bound of $N_{max}$ equities per GICS sector to prevent localized bubble loadings.
 
 ### The Macro Regime Filter
 To control downside convexity, the system continuously observes a broad market proxy (SPY). If the spot price of the proxy falls beneath its 200-day Simple Moving Average (SMA), the systemic risk environment is labeled as **Bearish**, triggering an absolute liquidation constraint. The portfolio dynamically rotates to **100% Cash holding** until the macro regime clears the trendline.
