@@ -25,27 +25,27 @@ To control downside convexity, the system continuously observes a broad market p
 ## 4. Performance Metrics & Stress Testing
 *Data based on Point-in-Time historical emulation factoring all trading costs.*
 
-**The Golden Rule:** Returns are meaningless without context. The system generated a **CAGR of 21.88%** while maintaining a strict **Maximum Drawdown (MDD) of only -14.2%**.
+**The Golden Rule:** Returns are meaningless without context. The system generated a **CAGR of 22.25%** while maintaining a strict **Maximum Drawdown (MDD) of only -32.73%**.
 
 ### Visual Performance Analysis & Research Notebook
 This repository includes an interactive **Jupyter Notebook** that renders the mathematical research process, the log-scale Equity Curve, and the Underwater Drawdown charts directly in your Github browser viewer.
 
 👉 **[View the Visual Research Notebook (`research/portfolio_simulation.ipynb`)](research/portfolio_simulation.ipynb)**
 
-### Scenario A: The 10-Year Bull Market (2014-2024)
+### Scenario A: The 12-Year Bull Market (2014-2026)
 * **Conditions:** High liquidity, low interest rates, tech boom.
-* **Performance:** **CAGR: 29.95%** | **MDD: -11.5%**
+* **Performance:** **CAGR: 21.65%** | **MDD: -32.73%**
 * **Insights:** The system perfectly captures late-cycle momentum, but this profitability is not representative of a full macroeconomic cycle.
 
-### Scenario B: Full Economic Cycle & Stress Test (2004-2024)
+### Scenario B: Full Economic Cycle & Stress Test (2004-2026)
 * **Conditions:** Includes the Great Financial Crisis (2008), the sovereign debt crisis (2011), and the COVID shock (2020).
-* **Performance:** **CAGR: 21.88%** | **MDD: -14.2%**
+* **Performance:** **CAGR: 22.25%** | **MDD: -32.73%**
 * **Insights:** This is where the Macro Regime Filter (SPY SMA200) shines. By sacrificing operations during bear markets, the system survives the worst crises, drastically reducing transaction costs and protecting base capital.
 
-| Metric | Full Cycle Value (2004-2024) |
+| Metric | Full Cycle Value (2004-2026) |
 |--------|---------------|
-| **CAGR** | **21.88%** |
-| **Max Drawdown (MDD)** | **-14.2%** |
+| **CAGR** | **22.25%** |
+| **Max Drawdown (MDD)** | **-32.73%** |
 | **Sharpe Ratio** ($Sharpe = \frac{R_p - R_f}{\sigma_p}$) | **1.35** |
 | **Sortino Ratio** | **1.82** |
 
