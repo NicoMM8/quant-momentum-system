@@ -1,4 +1,3 @@
-# src/execution/engine.py
 import pandas as pd
 from typing import List, Dict
 from src.execution.trade_manager import TradeManager, TradeState, TradeRecord
@@ -10,31 +9,22 @@ class ExecutionEngine:
         self.closed_trades: List[TradeRecord] = []
 
     def run(self):
-        """
-        Simula el Event Loop cronológico.
-        """
-        # 1. Preparar Managers
         unique_symbols = self.data_feed['symbol'].unique()
         for sym in unique_symbols:
             self.managers[sym] = TradeManager(sym)
 
         print(f"\n--- Iniciando Motor de Ejecución para {len(unique_symbols)} activos ---")
-        
-        # 2. Agrupar datos por timestamp para simular feed sincronizado
-        # (Todos los ticks de las 9:30, luego 9:31, etc.)
+
         time_grouped = self.data_feed.groupby('datetime')
 
         for timestamp, tick_data in time_grouped:
-            # tick_data contiene las filas de todos los símbolos en ESTE minuto
             for _, row in tick_data.iterrows():
                 sym = row['symbol']
                 manager = self.managers[sym]
-                
-                # Si el manager sigue activo (o esperando), le pasamos el dato
+
                 if manager.state != TradeState.CLOSED:
                     manager.on_tick(row)
 
-        # 3. Recopilar resultados
         self._collect_results()
 
     def _collect_results(self):
@@ -42,7 +32,7 @@ class ExecutionEngine:
         total_pnl = 0.0
         wins = 0
         losses = 0
-        
+
         for sym, mgr in self.managers.items():
             if mgr.state == TradeState.CLOSED:
                 trade = mgr.position
@@ -53,7 +43,7 @@ class ExecutionEngine:
                     else: losses += 1
             elif mgr.state == TradeState.OPEN:
                 print(f"[{sym}] ⚠️ Posición quedó abierta al cierre de mercado (Mark-to-Market).")
-        
+
         n_trades = len(self.closed_trades)
         if n_trades > 0:
             avg_pnl = total_pnl / n_trades
